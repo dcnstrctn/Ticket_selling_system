@@ -1,0 +1,31 @@
+{% extends "administrator_base.html" %}
+{% block content %}
+<div class="container">
+     {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% for i in range(200) %}
+    {% if bitmap[i] == "0" %}
+        <button type="button" style="background: url(/static/occupied.png); height: 40px; width: 4.6%;"></button>
+    {% else %}
+        <button type="button" style="background: url(/static/picked.png); height: 40px; width: 4.6%;"></button>
+    {% endif %}
+    {% endfor %}
+    <p align="center">
+        <br/>
+        <button type="button" class="btn btn-primary" onclick="Back()">Back</button>
+    </p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script language="javascript">
+function Back(){
+    location.href="/orderManagement";
+}
+</script>
+{% endblock %}

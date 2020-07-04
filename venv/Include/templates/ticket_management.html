@@ -1,0 +1,61 @@
+{% extends "administrator_base.html" %}
+{% block content %}
+<div class="container">
+     {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <a href="/addTicket">
+    <p align="right">
+        <button type="button" class="btn btn-primary">Add</button>
+    </p>
+    </a>
+    <div style="WIDTH:50%; HEIGHT:150px">
+    {{ wtf.quick_form(form) }}
+    </div>
+    {% for ticket in tickets %}
+    <div class="col-sm-6 col-md-6" style="BORDER-RIGHT: 3px outset; BORDER-TOP: 3px outset; BACKGROUND: #ffffff;
+BORDER-LEFT: 3px outset; WIDTH: 50%; BORDER-BOTTOM: 3px outset; HEIGHT: 100%;">
+        <div class="col-sm-6 col-md-6">
+        <img src="{{ getImage(ticket.id) }}" class="img-rounded" width="100%">
+        </div>
+        <div class="col-sm-6 col-md-6" width="100%">
+            <p><b>Ticket Name: </b>{{ ticket.ticketname }}</p>
+            <p><b>Time: </b>{{ ticket.time }}</p>
+            <p><b>Place: </b>{{ ticket.place }}</p>
+            <p><b>Price: </b>{{ ticket.price }}</p>
+            <p><b>Description: </b>{{ ticket.description }}</p>
+            <p><b>Remaining: </b>{{ticket.remaining}}</p>
+            <button type="button" class="btn btn-primary" onclick="Modify({{ticket.id}})">Modify</button>
+            <button type="button" class="btn btn-primary" onclick="Delete({{ticket.id}})">Delete</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script language="javascript">
+function Delete(z){
+$.ajax({
+            url:"{{ url_for('delete') }}",
+            type:"post",
+            data:{"id":z},
+            dataType: 'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                location.href("");
+            },
+            error:function(e){
+                location.reload();
+            }
+        })
+}
+function Modify(z){
+location.href="/modifyTicket/"+z;
+}
+</script>
+{% endblock %}

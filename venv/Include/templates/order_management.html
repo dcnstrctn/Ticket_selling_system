@@ -1,0 +1,52 @@
+{% extends "administrator_base.html" %}
+{% block content %}
+<div class="container">
+     {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% for order in orders %}
+    <div class="col-sm-6 col-md-6" style="BORDER-RIGHT: 3px outset; BORDER-TOP: 3px outset; BACKGROUND: #ffffff;
+BORDER-LEFT: 3px outset; WIDTH: 50%; BORDER-BOTTOM: 3px outset; HEIGHT: 100%;">
+        <div class="col-sm-6 col-md-6">
+        <img src="{{ getImage(order.ticket_id) }}" class="img-rounded" width="100%">
+        </div>
+        <div class="col-sm-6 col-md-6" width="100%">
+            <p><b>User Name: </b>{{ User.query.filter_by(id=order.user_id).first().username }}</p>
+            <p><b>Delivery Address: </b>{{ User.query.filter_by(id=order.user_id).first().deliveryaddress }}</p>
+            <p><b>Ticket Name: </b>{{ Ticket.query.filter_by(id=order.ticket_id).first().ticketname }}</p>
+            <p><b>Price: </b>{{ Ticket.query.filter_by(id=order.ticket_id).first().price }}</p>
+            <p><b>Number: </b>{{ order.num }}</p>
+            <button type="button" class="btn btn-primary" onclick="Seat({{order.id}})">Seat Information</button>
+            <button type="button" class="btn btn-primary" onclick="Cancel({{order.id}})">Cancel</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script language="javascript">
+function Cancel(z){
+$.ajax({
+            url:"{{ url_for('cancel') }}",
+            type:"post",
+            data:{"id":z},
+            dataType: 'json',
+            contentType:"application/json; charset=utf-8",
+            success:function(data){
+                location.reload();
+            },
+            error:function(e){
+                location.reload();
+            }
+        })
+}
+function Seat(id){
+location.href="/seatInformation_ad/"+id;
+}
+</script>
+{% endblock %}

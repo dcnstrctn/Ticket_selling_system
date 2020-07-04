@@ -1,0 +1,12 @@
+{% extends "administrator_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block content %}
+<div class="container" style="padding: 0px 300px;">
+    {% block page_content %}
+    <div class="page-header">
+    <h1>Add a new ticket.</h1>
+    </div>
+    {{ wtf.quick_form(form) }}
+    {% endblock %}
+</div>
+{% endblock %}
